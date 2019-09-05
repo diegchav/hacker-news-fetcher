@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
-const StyledSearchResults = styled.table`
+import Paper from '@material-ui/core/Paper';
+
+const StyledSearchResults = styled(Paper)`
   width: 80vw;
   margin-top: 15px;
-
-  th, td {
-    text-align: left;
-  }
 `;
 
 export default StyledSearchResults;
