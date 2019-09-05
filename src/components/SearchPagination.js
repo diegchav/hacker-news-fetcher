@@ -17,6 +17,11 @@ const SearchPagination = ({ page, totalPages, onPageChange }) => (
     <IconButton aria-label="previous" disabled={page <= 0} onClick={() => onPageChange(PREV_PAGE)}>
       <NavigateBefore />
     </IconButton>
+    {
+      totalPages
+        ? <span>{page + 1}</span>
+        : null
+    }
     <IconButton aria-label="after" disabled={page >= totalPages} onClick={() => onPageChange(NEXT_PAGE)}>
       <NavigateNext />
     </IconButton>
