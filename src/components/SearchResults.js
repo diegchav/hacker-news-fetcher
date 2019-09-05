@@ -20,55 +20,43 @@ import {
   SORT_POINTS
 } from '../constants';
 
+const tableHeaders = [
+  {
+    value: 'Author',
+    sort: SORT_AUTHOR
+  },
+  {
+    value: 'Title',
+    sort: SORT_TITLE
+  },
+  {
+    value: 'Num of comments',
+    sort: SORT_NUM_COMMENTS
+  },
+  {
+    value: 'Points',
+    sort: SORT_POINTS
+  }
+];
+
 const SearchResults = ({ results, onSort, sortKey, sortOrder, page, totalPages, onPageChange }) => (
   <StyledSearchResults>
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell
-            sortDirection={sortOrder[SORT_AUTHOR] ? sortOrder[SORT_AUTHOR] : false}
-          >
-            <TableSortLabel
-              active={sortKey === SORT_AUTHOR}
-              direction={sortOrder[SORT_AUTHOR] ? sortOrder[SORT_AUTHOR] : 'asc'}
-              onClick={() => onSort(SORT_AUTHOR)}
+          {tableHeaders.map((header, i) => (
+            <TableCell
+              key={i} sortDirection={sortOrder[header.sort] ? sortOrder[header.sort] : false}
             >
-              Author
-            </TableSortLabel>
-          </TableCell>
-          <TableCell
-            sortDirection={sortOrder[SORT_TITLE] ? sortOrder[SORT_TITLE] : false}
-          >
-            <TableSortLabel
-              active={sortKey === SORT_TITLE}
-              direction={sortOrder[SORT_TITLE] ? sortOrder[SORT_TITLE] : 'asc'}
-              onClick={() => onSort(SORT_TITLE)}
-            >
-              Title
-            </TableSortLabel>
-          </TableCell>
-          <TableCell
-            sortDirection={sortOrder[SORT_NUM_COMMENTS] ? sortOrder[SORT_NUM_COMMENTS] : false}
-          >
-            <TableSortLabel
-              active={sortKey === SORT_NUM_COMMENTS}
-              direction={sortOrder[SORT_NUM_COMMENTS] ? sortOrder[SORT_NUM_COMMENTS] : 'asc'}
-              onClick={() => onSort(SORT_NUM_COMMENTS)}
-            >
-              Num of comments
-            </TableSortLabel>
-          </TableCell>
-          <TableCell
-            sortDirection={sortOrder[SORT_POINTS] ? sortOrder[SORT_POINTS] : false}
-          >
-            <TableSortLabel
-              active={sortKey === SORT_POINTS}
-              direction={sortOrder[SORT_POINTS] ? sortOrder[SORT_POINTS] : 'asc'}
-              onClick={() => onSort(SORT_POINTS)}
-            >
-              Points
-            </TableSortLabel>
-          </TableCell>
+              <TableSortLabel
+                active={sortKey === header.sort}
+                direction={sortOrder[header.sort] ? sortOrder[header.sort] : 'asc'}
+                onClick={() => onSort(header.sort)}
+              >
+                {header.value}
+              </TableSortLabel>
+            </TableCell>  
+          ))}
         </TableRow>
       </TableHead>
       <TableBody>
