@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton'
+import SearchIcon from '@material-ui/icons/Search';
+
 import StyledSearch from './styles/StyledSearch';
 
 class Search extends React.Component {
   state = {
-    searchTerm: ''
+    searchTerm: 'react'
   };
 
   static propTypes = {
@@ -21,8 +25,15 @@ class Search extends React.Component {
     const { searchTerm } = this.state;
     return (
       <StyledSearch>
-        <input type="text" onChange={this.onSearchChange} value={searchTerm} />
-        <button onClick={() => onSearch(searchTerm)}>Search</button>
+        <InputBase
+          value={searchTerm}
+          onChange={this.onSearchChange}
+          placeholder="Search"
+          inputProps={{ 'aria-label': 'search' }}
+        />
+        <IconButton aria-label="search" onClick={() => onSearch(searchTerm)}>
+          <SearchIcon />
+        </IconButton>
       </StyledSearch>
     );
   }
