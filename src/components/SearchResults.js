@@ -6,6 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import Link from '@material-ui/core/Link';
 
 import StyledSearchResults from './styles/StyledSearchResults';
 
@@ -24,7 +25,11 @@ const SearchResults = ({ results }) => (
         {results.map(item => (
           <TableRow key={item.objectID}>
             <TableCell>{item.author}</TableCell>
-            <TableCell>{item.title}</TableCell>
+            <TableCell>
+            <Link underline="none" href={item.url} target="_blank" rel="noreferrer">
+              {item.title}
+            </Link>
+            </TableCell>
             <TableCell>{item.num_comments}</TableCell>
             <TableCell>{item.points}</TableCell>
           </TableRow>
