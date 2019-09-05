@@ -9,7 +9,7 @@ import StyledSearch from './styles/StyledSearch';
 
 class Search extends React.Component {
   state = {
-    searchTerm: 'react'
+    searchValue: ''
   };
 
   static propTypes = {
@@ -17,21 +17,21 @@ class Search extends React.Component {
   };
 
   onSearchChange = (event) => {
-    this.setState({ searchTerm: event.target.value });
+    this.setState({ searchValue: event.target.value });
   };
 
   render() {
     const { onSearch } = this.props;
-    const { searchTerm } = this.state;
+    const { searchValue } = this.state;
     return (
       <StyledSearch>
         <InputBase
-          value={searchTerm}
+          value={searchValue}
           onChange={this.onSearchChange}
           placeholder="Search"
           inputProps={{ 'aria-label': 'search' }}
         />
-        <IconButton aria-label="search" onClick={() => onSearch(searchTerm)}>
+        <IconButton aria-label="search" onClick={() => onSearch(searchValue)}>
           <SearchIcon />
         </IconButton>
       </StyledSearch>
