@@ -10,13 +10,16 @@ import {
   API_BASE_URL,
   API_QUERY_PARAM,
   API_HPP_PARAM,
+  API_PAGE_PARAM,
   API_HPP,
   SORT_AUTHOR,
   SORT_TITLE,
   SORT_NUM_COMMENTS,
   SORT_POINTS,
   SORT_ASC,
-  SORT_DESC
+  SORT_DESC,
+  PREV_PAGE,
+  NEXT_PAGE
 } from './constants';
 
 const StyledApp = styled.div`
@@ -28,6 +31,7 @@ const StyledApp = styled.div`
 
 class App extends React.Component {
   state = {
+    searchTerm: '',
     results: [],
     sortKey: SORT_TITLE,
     sortOrder: {
@@ -35,16 +39,26 @@ class App extends React.Component {
       [SORT_TITLE]: SORT_ASC,
       [SORT_NUM_COMMENTS]: null,
       [SORT_POINTS]: null
-    }
+    },
+    page: 0,
+    totalPages: 0
+  };
+
+  fetchResults = (searchTerm, page = 0) => {
+    const searchUrl = `${API_BASE_URL}${API_QUERY_PARAM}${searchTerm.toLowerCase()}&${API_HPP_PARAM}${API_HPP}&${API_PAGE_PARAM}${page}`;
+    axios.get(searchUrl)
+    .then(res => {
+      this.setState({
+        searchTerm,
+        results: res.data.hits,
+        page,
+        totalPages: res.data.nbPages
+      });
+    });
   };
 
   onSearch = (searchTerm) => {
-    const searchUrl = `${API_BASE_URL}${API_QUERY_PARAM}${searchTerm.toLowerCase()}&${API_HPP_PARAM}${API_HPP}`;
-    axios.get(searchUrl)
-    .then(res => {
-      const results = res.data.hits;
-      this.setState({ results });
-    });
+    this.fetchResults(searchTerm);
   };
 
   getSortOrder = (prevState, sortKey) => {
@@ -69,8 +83,31 @@ class App extends React.Component {
     });
   };
 
+  getPageFromDirection = (currentPage, totalPages, direction) => {
+    if (direction === PREV_PAGE) {
+      if (currentPage <= 0) {
+        return currentPage;
+      }
+      return currentPage - 1;
+    } else if (direction === NEXT_PAGE) {
+      if (currentPage >= totalPages) {
+        return currentPage;
+      }
+      return currentPage + 1;
+    }
+  
+    // Default to the first page.
+    return 0;
+  };
+
+  onPageChange = (direction) => {
+    const { searchTerm, page, totalPages } = this.state;
+    const newPage = this.getPageFromDirection(page, totalPages, direction);
+    this.fetchResults(searchTerm, newPage);
+  };
+
   render() {
-    const { results, sortKey, sortOrder } = this.state;
+    const { results, sortKey, sortOrder, page, totalPages } = this.state;
 
     const sortedResults = sortOrder[sortKey] === SORT_DESC
       ? sortBy(results, sortKey).reverse()
@@ -79,7 +116,14 @@ class App extends React.Component {
     return (
       <StyledApp>
         <Search onSearch={this.onSearch} />
-        <SearchResults results={sortedResults} sortKey={sortKey} sortOrder={sortOrder} onSort={this.onSort} />
+        <SearchResults
+          results={sortedResults}
+          sortKey={sortKey}
+          sortOrder={sortOrder}
+          onSort={this.onSort}
+          page={page}
+          totalPages={totalPages}
+          onPageChange={this.onPageChange} />
       </StyledApp>
     );
   }

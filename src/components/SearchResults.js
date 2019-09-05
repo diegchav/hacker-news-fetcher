@@ -9,6 +9,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Link from '@material-ui/core/Link';
 
+import SearchPagination from './SearchPagination';
+
 import StyledSearchResults from './styles/StyledSearchResults';
 
 import {
@@ -18,7 +20,7 @@ import {
   SORT_POINTS
 } from '../constants';
 
-const SearchResults = ({ results, onSort, sortKey, sortOrder }) => (
+const SearchResults = ({ results, onSort, sortKey, sortOrder, page, totalPages, onPageChange }) => (
   <StyledSearchResults>
     <Table>
       <TableHead>
@@ -84,6 +86,7 @@ const SearchResults = ({ results, onSort, sortKey, sortOrder }) => (
         ))}
       </TableBody>
     </Table>
+    <SearchPagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
   </StyledSearchResults>
 );
 
@@ -91,7 +94,10 @@ SearchResults.propTypes = {
   results: PropTypes.array.isRequired,
   sortKey: PropTypes.string.isRequired,
   sortOrder: PropTypes.object.isRequired,
-  onSort: PropTypes.func.isRequired
+  onSort: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired
 };
 
 export default SearchResults;
