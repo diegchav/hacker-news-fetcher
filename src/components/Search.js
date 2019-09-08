@@ -20,8 +20,12 @@ class Search extends React.Component {
     this.setState({ searchValue: event.target.value });
   };
 
+  handleSearchClick = () => {
+    this.props.onSearch(this.state.searchValue);
+    this.setState({ searchValue: '' });
+  };
+
   render() {
-    const { onSearch } = this.props;
     const { searchValue } = this.state;
     return (
       <StyledSearch>
@@ -31,7 +35,7 @@ class Search extends React.Component {
           placeholder="Search"
           inputProps={{ 'aria-label': 'search' }}
         />
-        <IconButton aria-label="search" onClick={() => onSearch(searchValue)}>
+        <IconButton aria-label="search" onClick={this.handleSearchClick}>
           <SearchIcon />
         </IconButton>
       </StyledSearch>
