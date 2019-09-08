@@ -19,7 +19,8 @@ import {
   SORT_ASC,
   SORT_DESC,
   PREV_PAGE,
-  NEXT_PAGE
+  NEXT_PAGE,
+  LOCAL_STORAGE_KEY
 } from './constants';
 
 const StyledApp = styled.div`
@@ -44,6 +45,16 @@ class App extends React.Component {
     totalPages: 0
   };
 
+  componentDidMount() {
+    if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+      const lsState = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+      this.setState({
+        ...this.state,
+        ...lsState
+      });
+    }
+  }
+
   fetchResults = (searchTerm, page = 0) => {
     const searchUrl = `${API_BASE_URL}${API_QUERY_PARAM}${searchTerm.toLowerCase()}&${API_HPP_PARAM}${API_HPP}&${API_PAGE_PARAM}${page}`;
     axios.get(searchUrl)
@@ -54,6 +65,7 @@ class App extends React.Component {
         page,
         totalPages: res.data.nbPages
       });
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.state));
     });
   };
 

@@ -17,3 +17,6 @@ export const SORT_DESC = 'desc';
 // Navigation
 export const PREV_PAGE = 'prev';
 export const NEXT_PAGE = 'next';
+
+// Local storage
+export const LOCAL_STORAGE_KEY = 'ls_state';
