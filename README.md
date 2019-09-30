@@ -2,6 +2,12 @@
 
 Simple application to fetch articles using Hacker News API
 
+## Technologies
+
+- React
+- Axios
+- Material UI
+
 ## Demo
 
 You can check the online demo at <https://hackernews-fetcher.netlify.com>
