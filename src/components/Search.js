@@ -16,11 +16,13 @@ class Search extends React.Component {
     onSearch: PropTypes.func.isRequired
   };
 
-  onSearchChange = (event) => {
+  handleChange = (event) => {
     this.setState({ searchValue: event.target.value });
   };
 
-  handleSearchClick = () => {
+  handleSubmit = (e) => {
+    e.preventDefault();
+
     this.props.onSearch(this.state.searchValue);
     this.setState({ searchValue: '' });
   };
@@ -29,15 +31,17 @@ class Search extends React.Component {
     const { searchValue } = this.state;
     return (
       <StyledSearch>
-        <InputBase
-          value={searchValue}
-          onChange={this.onSearchChange}
-          placeholder="Search"
-          inputProps={{ 'aria-label': 'search' }}
-        />
-        <IconButton aria-label="search" onClick={this.handleSearchClick}>
-          <SearchIcon />
-        </IconButton>
+        <form onSubmit={this.handleSubmit}>
+          <InputBase
+            value={searchValue}
+            onChange={this.handleChange}
+            placeholder="Search"
+            inputProps={{ 'aria-label': 'search' }}
+          />
+          <IconButton type="submit" aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </form>
       </StyledSearch>
     );
   }
