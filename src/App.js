@@ -75,7 +75,7 @@ class App extends React.Component {
     });
   };
 
-  onSearch = (searchTerm) => {
+  handleSearch = (searchTerm) => {
     this.fetchResults(searchTerm);
     this.setState({ loading: true });
   };
@@ -91,7 +91,7 @@ class App extends React.Component {
     return SORT_ASC;
   };
 
-  onSort = (sortKey) => {
+  handleSort = (sortKey) => {
     this.setState((prevState, props) => {
       const prevSortOrder = {...prevState.sortOrder};
       prevSortOrder[sortKey] = this.getSortOrder(prevSortOrder, sortKey);
@@ -119,7 +119,7 @@ class App extends React.Component {
     return 0;
   };
 
-  onPageChange = (direction) => {
+  handlePageChange = (direction) => {
     const { searchTerm, page, totalPages } = this.state;
     const newPage = this.getPageFromDirection(page, totalPages, direction);
     this.fetchResults(searchTerm, newPage);
@@ -134,16 +134,16 @@ class App extends React.Component {
     
     return (
       <StyledApp>
-        <Search onSearch={this.onSearch} />
+        <Search onSearch={this.handleSearch} />
         <SearchResultsWithSpinner
           isLoading={loading}
           results={sortedResults}
           sortKey={sortKey}
           sortOrder={sortOrder}
-          onSort={this.onSort}
+          onSort={this.handleSort}
           page={page}
           totalPages={totalPages}
-          onPageChange={this.onPageChange} />
+          onPageChange={this.handlePageChange} />
       </StyledApp>
     );
   }
