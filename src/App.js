@@ -6,6 +6,8 @@ import { sortBy } from 'lodash';
 import Search from './components/Search';
 import SearchResults from './components/SearchResults';
 
+import WithSpinner from './hoc/WithSpinner';
+
 import {
   API_BASE_URL,
   API_QUERY_PARAM,
@@ -30,6 +32,8 @@ const StyledApp = styled.div`
   justify-content: center;
 `;
 
+const SearchResultsWithSpinner = WithSpinner(SearchResults);
+
 class App extends React.Component {
   state = {
     searchTerm: '',
@@ -42,7 +46,8 @@ class App extends React.Component {
       [SORT_POINTS]: null
     },
     page: 0,
-    totalPages: 0
+    totalPages: 0,
+    loading: false
   };
 
   componentDidMount() {
@@ -63,7 +68,8 @@ class App extends React.Component {
         searchTerm,
         results: res.data.hits,
         page,
-        totalPages: res.data.nbPages
+        totalPages: res.data.nbPages,
+        loading: false
       });
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.state));
     });
@@ -71,6 +77,7 @@ class App extends React.Component {
 
   onSearch = (searchTerm) => {
     this.fetchResults(searchTerm);
+    this.setState({ loading: true });
   };
 
   getSortOrder = (prevState, sortKey) => {
@@ -119,7 +126,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { results, sortKey, sortOrder, page, totalPages } = this.state;
+    const { loading, results, sortKey, sortOrder, page, totalPages } = this.state;
 
     const sortedResults = sortOrder[sortKey] === SORT_DESC
       ? sortBy(results, sortKey).reverse()
@@ -128,7 +135,8 @@ class App extends React.Component {
     return (
       <StyledApp>
         <Search onSearch={this.onSearch} />
-        <SearchResults
+        <SearchResultsWithSpinner
+          isLoading={loading}
           results={sortedResults}
           sortKey={sortKey}
           sortOrder={sortOrder}
